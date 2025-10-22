@@ -35,4 +35,20 @@ app.delete("/courses/:id", async (request: Request, response: Response) => {
     return response.json()
 })
 
+
+app.post("/modules", async (request: Request, response: Response) => {
+    const { name, id_courses } = request.body
+
+    await knexConfig("course_modules").insert({ name, id_courses })
+    return response.status(201).json()
+})
+
+app.get("/modules", async (request: Request, response: Response) => {
+
+
+    const modules = await knexConfig("course_modules").select()
+    return response.json(modules)
+})
+
+
 app.listen(3333, () => console.log(`Server is running on port 3333`))
