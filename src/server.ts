@@ -8,7 +8,7 @@ app.use(express.json())
 app.post("/courses", async (request: Request, response: Response) => {
     const { nome } = request.body
 
- await knexConfig("courses").insert({nome})
+    await knexConfig.raw("INSERT INTO courses (nome) VALUES(?)", [nome])
     response.status(201).json()
 })
 
