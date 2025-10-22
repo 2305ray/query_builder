@@ -6,10 +6,17 @@ const app = express()
 app.use(express.json())
 
 app.post("/courses", async (request: Request, response: Response) => {
-    const { nome } = request.body
+    const { name } = request.body
+    //await knexConfig.raw("INSERT INTO courses (nome) VALUES(?)", [nome])
 
-    await knexConfig.raw("INSERT INTO courses (nome) VALUES(?)", [nome])
+    await knexConfig("courses").insert({ name })
     response.status(201).json()
 })
 
+app.get("/courses", async (request: Request, response: Response) => {
+    // const courses = await knexConfig("courses").select("*");
+
+    const courses = await knexConfig("courses").select().orderBy("name", "desc")
+    response.json(courses);
+})
 app.listen(3333, () => console.log(`Server is running on port 3333`))
